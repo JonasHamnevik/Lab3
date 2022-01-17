@@ -10,7 +10,8 @@ using (var context = new BookstoreContext())
     //GetBooks();
     //AddBook();
     //RemoveBook();
-    GetInventory();
+    GetStock();
+    //GetInventory();
 
     //Visar alla böcker
     void GetBooks()
@@ -49,7 +50,7 @@ using (var context = new BookstoreContext())
     void GetInventory()
     {
 
-        var stockBalance =
+        var inventory =
             from s in context.Stocks
             join st in context.Stores on s.StoreId equals st.Id
             join b in context.Books on s.Isbn13 equals b.Isbn13
@@ -58,14 +59,38 @@ using (var context = new BookstoreContext())
             select new
             {
                 g.Key.Name,
-                balance = g.Sum(x => x.Quantity * x.Price), 
+                inventory = g.Sum(x => x.Quantity * x.Price) 
             };
 
-        Console.WriteLine("{0, -10} {1, -20}\n", "Store", "Stock balance");
+        Console.WriteLine("{0, -10} {1, -20}\n", "Store", "Inventory");
+
+        foreach (var s in inventory)
+        {
+            Console.WriteLine("{0, -10} {1, -20}\n", s.Name, s.inventory);
+        }
+        Console.WriteLine();
+        Console.Write("----------------------------------------------------------");
+    }
+
+    void GetStock()
+    {
+
+        var stockBalance =
+            from s in context.Stocks
+            join st in context.Stores on s.StoreId equals st.Id
+            join b in context.Books on s.Isbn13 equals b.Isbn13
+            select new
+            {
+                st.Name,
+                b.Title,
+                s.Quantity
+            };
+
+        Console.WriteLine("{0} - {1} - {2}\n", "Store", "Title", "Quantity");
 
         foreach (var s in stockBalance)
         {
-            Console.WriteLine("{0, -10} {1, -20}\n", s.Name, s.balance);
+            Console.WriteLine("{0} - {1} - {2}\n", s.Name, s.Title, s.Quantity);
         }
         Console.WriteLine();
         Console.Write("----------------------------------------------------------");
