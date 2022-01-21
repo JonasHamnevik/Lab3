@@ -10,8 +10,8 @@ using (var context = new BookstoreContext())
     //GetBooks();
     //AddBook();
     //RemoveBook();
-    GetStock();
-    //GetInventory();
+    //GetStock();
+    GetInventory();
 
     //Visar alla böcker
     void GetBooks()
@@ -47,6 +47,7 @@ using (var context = new BookstoreContext())
         Console.ReadKey();
     }
 
+    //Visa totala värdet hos varje bokhandel
     void GetInventory()
     {
 
@@ -62,16 +63,17 @@ using (var context = new BookstoreContext())
                 inventory = g.Sum(x => x.Quantity * x.Price) 
             };
 
-        Console.WriteLine("{0, -10} {1, -20}\n", "Store", "Inventory");
+        Console.WriteLine("{0, -10} {1, -20}\n", "Store", "Stock balance");
 
         foreach (var s in inventory)
         {
-            Console.WriteLine("{0, -10} {1, -20}\n", s.Name, s.inventory);
+            Console.WriteLine("{0, -10} {1}kr\n", s.Name, s.inventory);
         }
         Console.WriteLine();
         Console.Write("----------------------------------------------------------");
     }
 
+    //Visa totala antalet böcker
     void GetStock()
     {
 
